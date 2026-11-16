@@ -1,0 +1,13 @@
+{
+  "name": "task-tracker",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" }
+  },
+  "forwardPorts": [5173, 4000],
+  "portsAttributes": {
+    "5173": { "label": "Frontend" },
+    "4000": { "label": "API" }
+  },
+  "postCreateCommand": "npm install && npm --prefix frontend install"
+}

@@ -1,0 +1,167 @@
+openapi: 3.0.3
+info:
+  title: Task Tracker API
+  version: 1.0.0
+  description: |
+    Binding API contract. Both backends (Node.js and Python) MUST implement it exactly:
+    same paths, JSON field names, status codes and error format.
+    Base URL (local): http://localhost:4000
+servers:
+  - url: http://localhost:4000
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+  /api/tasks:
+    get:
+      summary: List tasks (with optional filtering and sorting)
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema: { type: string, enum: [open, done] }
+          description: Only return tasks with this status.
+        - name: minPriority
+          in: query
+          required: false
+          schema: { type: integer, minimum: 1, maximum: 10 }
+          description: Only return tasks with priority >= minPriority.
+        - name: sort
+          in: query
+          required: false
+          schema: { type: string, enum: [priority, dueDate, createdAt], default: priority }
+        - name: order
+          in: query
+          required: false
+          schema: { type: string, enum: [asc, desc], default: desc }
+          description: |
+            Sort direction. When sorting by dueDate, tasks without a due date (null)
+            come first in ascending order and last in descending order.
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Task' }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TaskCreate' }
+      responses:
+        '201':
+          description: Created task
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /api/tasks/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string, pattern: '^[a-fA-F0-9]{24}$' }
+    get:
+      summary: Get one task
+      responses:
+        '200':
+          description: The task
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      summary: Partially update a task
+      description: Returns the task AFTER the update.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TaskUpdate' }
+      responses:
+        '200':
+          description: Updated task (state after the update)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Task' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      summary: Delete a task
+      responses:
+        '204': { description: Deleted }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+components:
+  responses:
+    BadRequest:
+      description: Invalid input (body, query parameter or malformed id)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Task does not exist
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string, example: "minPriority must be an integer between 1 and 10" }
+    Task:
+      type: object
+      required: [id, title, description, priority, dueDate, status, createdAt]
+      properties:
+        id: { type: string, example: 6730c1f2a1b2c3d4e5f60718 }
+        title: { type: string, example: Renew SSL certificate }
+        description: { type: string, example: "" }
+        priority:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: 1 = lowest, 10 = highest
+        dueDate:
+          type: string
+          format: date
+          nullable: true
+          description: Calendar date without time and without timezone (YYYY-MM-DD).
+          example: '2026-11-28'
+        status: { type: string, enum: [open, done] }
+        createdAt: { type: string, format: date-time }
+    TaskCreate:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200, description: Must not be blank }
+        description: { type: string, maxLength: 2000, default: "" }
+        priority: { type: integer, minimum: 1, maximum: 10, default: 5 }
+        dueDate: { type: string, format: date, nullable: true, default: null }
+        status: { type: string, enum: [open, done], default: open }
+    TaskUpdate:
+      type: object
+      description: All fields optional. Only provided fields are changed.
+      properties:
+        title: { type: string, minLength: 1, maxLength: 200 }
+        description: { type: string, maxLength: 2000 }
+        priority: { type: integer, minimum: 1, maximum: 10 }
+        dueDate: { type: string, format: date, nullable: true }
+        status: { type: string, enum: [open, done] }

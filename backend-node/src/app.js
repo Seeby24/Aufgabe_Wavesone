@@ -1,0 +1,26 @@
+const express = require('express');
+const tasksRouter = require('./routes/tasks');
+const { HttpError } = require('./errors');
+
+const app = express();
+
+app.use(express.json());
+
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.use('/api/tasks', tasksRouter);
+
+app.use((req, res) => res.status(404).json({ error: 'Not found' }));
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  if (err instanceof HttpError) {
+    return res.status(err.status).json({ error: err.message });
+  }
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Request body is not valid JSON' });
+  }
+  console.error(err);
+  return res.status(500).json({ error: 'Internal server error' });
+});
+
+module.exports = app;

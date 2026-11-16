@@ -1,0 +1,212 @@
+[
+  {
+    "title": "Prepare kick-off slides",
+    "description": "Agenda, goals and team intro for the client kick-off",
+    "priority": 5,
+    "dueDate": "2026-11-14",
+    "status": "open"
+  },
+  {
+    "title": "Review pull request #42",
+    "description": "Check error handling in the export module",
+    "priority": 7,
+    "dueDate": "2026-11-18",
+    "status": "open"
+  },
+  {
+    "title": "Book meeting room",
+    "description": "Room for the sprint review",
+    "priority": 2,
+    "dueDate": null,
+    "status": "done"
+  },
+  {
+    "title": "Update project timeline",
+    "description": "Move milestone 3 by one week",
+    "priority": 6,
+    "dueDate": "2026-11-21",
+    "status": "open"
+  },
+  {
+    "title": "Write test cases for login",
+    "description": "Happy path and invalid password",
+    "priority": 8,
+    "dueDate": "2026-11-25",
+    "status": "open"
+  },
+  {
+    "title": "Clean up Jira backlog",
+    "description": "Close duplicates, re-prioritise",
+    "priority": 3,
+    "dueDate": "2026-12-01",
+    "status": "open"
+  },
+  {
+    "title": "Fix typo on landing page",
+    "description": "",
+    "priority": 1,
+    "dueDate": "2026-11-30",
+    "status": "done"
+  },
+  {
+    "title": "Prepare demo data",
+    "description": "Anonymised customer data for the demo",
+    "priority": 6,
+    "dueDate": "2026-11-13",
+    "status": "open"
+  },
+  {
+    "title": "Call supplier about invoice",
+    "description": "Invoice 2026-118 is missing a position",
+    "priority": 4,
+    "dueDate": "2026-11-17",
+    "status": "open"
+  },
+  {
+    "title": "Renew SSL certificate",
+    "description": "Expires end of month - production is affected",
+    "priority": 10,
+    "dueDate": "2026-11-28",
+    "status": "open"
+  },
+  {
+    "title": "Plan team lunch",
+    "description": "",
+    "priority": 1,
+    "dueDate": "2026-12-12",
+    "status": "done"
+  },
+  {
+    "title": "Document API endpoints",
+    "description": "OpenAPI descriptions for /tasks",
+    "priority": 5,
+    "dueDate": "2026-12-05",
+    "status": "open"
+  },
+  {
+    "title": "Security patch for database server",
+    "description": "Critical CVE - must be done this week",
+    "priority": 10,
+    "dueDate": "2026-11-15",
+    "status": "open"
+  },
+  {
+    "title": "Onboarding checklist for interns",
+    "description": "Laptop, accounts, buddy",
+    "priority": 7,
+    "dueDate": "2026-12-01",
+    "status": "open"
+  },
+  {
+    "title": "Refactor date utilities",
+    "description": "",
+    "priority": 3,
+    "dueDate": null,
+    "status": "open"
+  },
+  {
+    "title": "Answer customer e-mail",
+    "description": "Question about the release date",
+    "priority": 4,
+    "dueDate": "2026-11-12",
+    "status": "open"
+  },
+  {
+    "title": "Order new monitor",
+    "description": "",
+    "priority": 1,
+    "dueDate": "2026-12-20",
+    "status": "done"
+  },
+  {
+    "title": "Prepare retrospective",
+    "description": "Collect feedback from the team",
+    "priority": 5,
+    "dueDate": "2026-11-27",
+    "status": "open"
+  },
+  {
+    "title": "Backup restore test",
+    "description": "Restore last night's backup on staging",
+    "priority": 9,
+    "dueDate": "2026-11-19",
+    "status": "open"
+  },
+  {
+    "title": "Translate UI texts to German",
+    "description": "",
+    "priority": 2,
+    "dueDate": "2026-12-10",
+    "status": "open"
+  },
+  {
+    "title": "Update dependencies",
+    "description": "npm audit shows 3 high findings",
+    "priority": 8,
+    "dueDate": "2026-11-24",
+    "status": "open"
+  },
+  {
+    "title": "Write release notes",
+    "description": "Version 1.4",
+    "priority": 6,
+    "dueDate": "2026-11-26",
+    "status": "open"
+  },
+  {
+    "title": "Fix broken CI pipeline",
+    "description": "Tests fail since yesterday - blocks all merges",
+    "priority": 10,
+    "dueDate": "2026-11-11",
+    "status": "open"
+  },
+  {
+    "title": "Archive old projects",
+    "description": "",
+    "priority": 1,
+    "dueDate": "2027-01-15",
+    "status": "done"
+  },
+  {
+    "title": "Check accessibility of forms",
+    "description": "Labels and keyboard navigation",
+    "priority": 4,
+    "dueDate": "2026-12-03",
+    "status": "open"
+  },
+  {
+    "title": "Plan Q3 roadmap",
+    "description": "Workshop with product owner",
+    "priority": 7,
+    "dueDate": "2027-01-08",
+    "status": "open"
+  },
+  {
+    "title": "Submit expense report",
+    "description": "",
+    "priority": 2,
+    "dueDate": null,
+    "status": "done"
+  },
+  {
+    "title": "Investigate slow search",
+    "description": "Search takes > 3s for large boards",
+    "priority": 9,
+    "dueDate": "2026-11-20",
+    "status": "open"
+  },
+  {
+    "title": "Prepare workshop material",
+    "description": "Exercises for the Git workshop",
+    "priority": 5,
+    "dueDate": "2026-12-08",
+    "status": "open"
+  },
+  {
+    "title": "Rotate API keys",
+    "description": "Quarterly key rotation",
+    "priority": 8,
+    "dueDate": "2026-12-31",
+    "status": "open"
+  }
+]
