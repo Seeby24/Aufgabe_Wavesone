@@ -98,7 +98,7 @@ async function createTask(body) {
 
 async function updateTask(id, body) {
   const data = validateTaskInput(body, { partial: true });
-  const doc = await Task.findByIdAndUpdate(id, data).lean();
+  const doc = await Task.findByIdAndUpdate(id, data, {new : true}).lean();
   if (!doc) throw new HttpError(404, 'Task not found');
   return toDto(doc);
 }

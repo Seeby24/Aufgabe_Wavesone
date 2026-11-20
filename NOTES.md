@@ -10,7 +10,7 @@
 | 1   |  /tasks werden nicht angezeigt             | await hinzufügen | routes/tasks.js Zeile 20 await|
 | 2   |  Priorität falsch herum  |Sort Absteigend & priority ist ein String| taskService(listTasks) & tasks.json                              |
 | 3   | Datum um 1 Tag Falsch |  UTC-Zeitzonenumrechnung        | Models/tasks.js Date --> String; Zeitumrechnung in validateTaskInput geändert                             |
-| 4   |                                            |         |                              |
+| 4   | Checkboxen erst nach refresh geändert| Backend gibt nach änderung das alte Document zurück |taskservice.updateTask --> {new: true}  |
 | 5   |                                            |         |                              |
 | 6   |                                            |         |                              |
 | …   | _(alles, was du sonst noch gefunden hast)_ |         |                              |
