@@ -52,10 +52,18 @@ function validateTaskInput(body, { partial }) {
   }
 
   // dueDate is optional - normalise "no due date" to null
-  const dueDate = body.dueDate ? new Date(body.dueDate) : null;
-  if (dueDate && Number.isNaN(dueDate.getTime())) {
-    throw new HttpError(400, 'dueDate is not a valid date');
+  const dueDate = body.dueDate || null;
+  if (dueDate !== null) {
+    if (
+      typeof dueDate !== 'string' ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
+      Number.isNaN(Date.parse(`${dueDate}T00:00:00Z`)) ||
+      new Date(`${dueDate}T00:00:00Z`).toISOString().slice(0, 10) !== dueDate
+    ) {
+      throw new HttpError(400, 'dueDate must be a valid date in YYYY-MM-DD format');
+    }
   }
+
   data.dueDate = dueDate;
 
   if (body.status !== undefined) {

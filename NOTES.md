@@ -9,7 +9,7 @@
 | --- | ------------------------------------------ | ------- | ---------------------------- |
 | 1   |  /tasks werden nicht angezeigt             | await hinzufügen | routes/tasks.js Zeile 20 await|
 | 2   |  Priorität falsch herum  |Sort Absteigend & priority ist ein String| taskService(listTasks) & tasks.json                              |
-| 3   |                                            |         |                              |
+| 3   | Datum um 1 Tag Falsch |  UTC-Zeitzonenumrechnung        | Models/tasks.js Date --> String; Zeitumrechnung in validateTaskInput geändert                             |
 | 4   |                                            |         |                              |
 | 5   |                                            |         |                              |
 | 6   |                                            |         |                              |
