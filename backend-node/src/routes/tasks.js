@@ -9,7 +9,7 @@ const asyncHandler = (fn) => (req, res, next) => Promise.resolve(fn(req, res, ne
 router.get(
   '/',
   asyncHandler(async (req, res) => {
-    const tasks = await taskService.listTasks();
+    const tasks = await taskService.listTasks(req.query);
     res.json(tasks);
   })
 );

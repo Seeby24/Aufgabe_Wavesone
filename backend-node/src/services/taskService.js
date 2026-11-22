@@ -3,6 +3,9 @@ const { HttpError } = require("../errors");
 const { default: mongoose } = require("mongoose");
 
 const STATUSES = ["open", "done"];
+const SORT_FIELDS = ["priority", "dueDate", "createdAt"];
+const ORDERS = ["asc", "desc"];
+
 
 // ---------- mapping ----------
 
@@ -89,11 +92,58 @@ function validateTaskInput(body, { partial }) {
   return data;
 }
 
+
+function validateTaskQuery(query) {
+  const { status, minPriority, sort = "priority", order = "desc" } = query;
+
+  if (status !== undefined && !STATUSES.includes(status)) {
+    throw new HttpError(400, "status must be 'open' or 'done'");
+  }
+
+  let priority;
+  if (minPriority !== undefined) {
+    priority = Number(minPriority);
+    if (!/^\d+$/.test(minPriority) || priority < 1 || priority > 10) {
+      throw new HttpError(400, "minPriority must be an integer between 1 and 10");
+    }
+  }
+
+  if (!SORT_FIELDS.includes(sort)) {
+    throw new HttpError(400, `sort must be one of: ${SORT_FIELDS.join(", ")}`);
+  }
+
+  if (!ORDERS.includes(order)) {
+    throw new HttpError(400, "order must be 'asc' or 'desc'");
+  }
+
+  return { status, minPriority: priority, sort, order };
+}
+
 // ---------- service functions ----------
 
-async function listTasks() {
-  // most important tasks first
-  const docs = await Task.find().sort({ priority: 1, _id: 1 }).lean();
+async function listTasks(query) {
+  const { status, minPriority, sort, order } =
+    validateTaskQuery(query);
+     const filter = {};
+
+  if (status) {
+    filter.status = status;
+  }
+
+  if (minPriority !== undefined) {
+    filter.priority = { $gte: minPriority };
+  }
+
+  // Build database sorting
+  const sortQuery = {
+    [sort]: order === "asc" ? 1 : -1,
+    _id: 1,
+  };
+
+  const docs = await Task.find(filter)
+    .sort(sortQuery)
+    .lean();
+
   return docs.map(toDto);
 }
 

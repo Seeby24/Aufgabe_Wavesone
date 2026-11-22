@@ -1,17 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
-import * as api from './api';
-import TaskForm from './components/TaskForm.jsx';
-import TaskList from './components/TaskList.jsx';
+import { useCallback, useEffect, useState } from "react";
+import * as api from "./api";
+import TaskForm from "./components/TaskForm.jsx";
+import TaskList from "./components/TaskList.jsx";
 
 export default function App() {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [status, setStatus] = useState("");
+  const [minPriority, setMinPriority] = useState("");
+  const [sort, setSort] = useState("priority");
+  const [order, setOrder] = useState("desc");
+
   const loadTasks = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api.listTasks();
+      const data = await api.listTasks({ status, minPriority, sort, order });
       setTasks(Array.isArray(data) ? data : []);
       setError(null);
     } catch (err) {
@@ -19,7 +24,7 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [status, minPriority, sort, order]);
 
   useEffect(() => {
     loadTasks();
@@ -37,9 +42,11 @@ export default function App() {
   async function handleToggle(task) {
     try {
       const updated = await api.updateTask(task.id, {
-        status: task.status === 'done' ? 'open' : 'done',
+        status: task.status === "done" ? "open" : "done",
       });
-      setTasks((current) => current.map((t) => (t.id === updated.id ? updated : t)));
+      setTasks((current) =>
+        current.map((t) => (t.id === updated.id ? updated : t)),
+      );
     } catch (err) {
       setError(err.message);
     }
@@ -58,9 +65,60 @@ export default function App() {
     <main className="container">
       <h1>Task Tracker</h1>
       <TaskForm onCreate={handleCreate} />
-      {/* TODO: filter and sort controls */}
+      
+      <div className="filters">
+        <label>
+          Status
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="">All</option>
+            <option value="open">Open</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+
+        <label>
+          Min. priority
+          <select
+            value={minPriority}
+            onChange={(e) => setMinPriority(e.target.value)}
+          >
+            <option value="">All</option>
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((p) => (
+              <option key={p} value={p}>
+                From {p}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Sort by
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value="priority">Priority</option>
+            <option value="dueDate">Due date</option>
+            <option value="createdAt">Created</option>
+          </select>
+        </label>
+
+        <label>
+          Order
+          <select value={order} onChange={(e) => setOrder(e.target.value)}>
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </label>
+      </div>
+
       {error && <p className="error">⚠ {error}</p>}
-      {loading ? <p>Loading…</p> : <TaskList tasks={tasks} onToggle={handleToggle} onDelete={handleDelete} />}
+      {loading ? (
+        <p>Loading…</p>
+      ) : (
+        <TaskList
+          tasks={tasks}
+          onToggle={handleToggle}
+          onDelete={handleDelete}
+        />
+      )}
     </main>
   );
 }

@@ -13,8 +13,18 @@ async function request(path, options = {}) {
   return data;
 }
 
-export function listTasks() {
-  return request('/tasks');
+export function listTasks(filters = {}) {
+  const params = new URLSearchParams();
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== '') {
+      params.append(key, value);
+    }
+  });
+
+  const query = params.toString();
+
+  return request(`/tasks${query ? `?${query}` : ''}`);
 }
 
 export function createTask(task) {
