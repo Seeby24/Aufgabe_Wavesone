@@ -6,7 +6,6 @@ const STATUSES = ["open", "done"];
 const SORT_FIELDS = ["priority", "dueDate", "createdAt"];
 const ORDERS = ["asc", "desc"];
 
-
 // ---------- mapping ----------
 
 function toDto(doc) {
@@ -57,15 +56,20 @@ function validateTaskInput(body, { partial }) {
     data.description = body.description;
   }
 
-if (body.priority !== undefined) {
-  const priority = Number(body.priority);
+  if (body.priority !== undefined) {
+    const priority = body.priority;
 
-  if (!Number.isInteger(priority) || priority < 1 || priority > 10) {
-    throw new HttpError(400, "Priority must be an integer between 1 and 10");
+    if (
+      typeof priority !== "number" ||
+      !Number.isInteger(priority) ||
+      priority < 1 ||
+      priority > 10
+    ) {
+      throw new HttpError(400, "Priority must be an integer between 1 and 10");
+    }
+
+    data.priority = priority;
   }
-
-  data.priority = priority;
-}
 
   // dueDate is optional - normalise "no due date" to null
 
@@ -98,7 +102,6 @@ if (body.priority !== undefined) {
   return data;
 }
 
-
 function validateTaskQuery(query) {
   const { status, minPriority, sort = "priority", order = "desc" } = query;
 
@@ -110,7 +113,10 @@ function validateTaskQuery(query) {
   if (minPriority !== undefined) {
     priority = Number(minPriority);
     if (!/^\d+$/.test(minPriority) || priority < 1 || priority > 10) {
-      throw new HttpError(400, "minPriority must be an integer between 1 and 10");
+      throw new HttpError(
+        400,
+        "minPriority must be an integer between 1 and 10",
+      );
     }
   }
 
@@ -128,9 +134,8 @@ function validateTaskQuery(query) {
 // ---------- service functions ----------
 
 async function listTasks(query) {
-  const { status, minPriority, sort, order } =
-    validateTaskQuery(query);
-     const filter = {};
+  const { status, minPriority, sort, order } = validateTaskQuery(query);
+  const filter = {};
 
   if (status) {
     filter.status = status;
@@ -146,9 +151,7 @@ async function listTasks(query) {
     _id: 1,
   };
 
-  const docs = await Task.find(filter)
-    .sort(sortQuery)
-    .lean();
+  const docs = await Task.find(filter).sort(sortQuery).lean();
 
   return docs.map(toDto);
 }
@@ -168,7 +171,7 @@ async function createTask(body) {
 }
 
 async function updateTask(id, body) {
-   if (!mongoose.isValidObjectId(id))
+  if (!mongoose.isValidObjectId(id))
     throw new HttpError(400, "Invalid task ID");
   const data = validateTaskInput(body, { partial: true });
   const doc = await Task.findByIdAndUpdate(id, data, { new: true }).lean();
@@ -177,7 +180,7 @@ async function updateTask(id, body) {
 }
 
 async function deleteTask(id) {
-   if (!mongoose.isValidObjectId(id))
+  if (!mongoose.isValidObjectId(id))
     throw new HttpError(400, "Invalid task ID");
   const doc = await Task.findByIdAndDelete(id).lean();
   if (!doc) throw new HttpError(404, "Task not found");

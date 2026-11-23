@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { startOfDay } from '../date';
+import { useState } from "react";
+import { startOfDay } from "../date";
 
-const EMPTY = { title: '', description: '', priority: '5', dueDate: '' };
+const EMPTY = { title: "", description: "", priority: "5", dueDate: "" };
 
 export default function TaskForm({ onCreate }) {
   const [form, setForm] = useState(EMPTY);
@@ -15,7 +15,7 @@ export default function TaskForm({ onCreate }) {
     await onCreate({
       title: form.title.trim(),
       description: form.description,
-      priority: form.priority,
+      priority: Number(form.priority),
       dueDate: form.dueDate || null,
     });
     setForm(EMPTY);
@@ -23,11 +23,22 @@ export default function TaskForm({ onCreate }) {
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
-      <input placeholder="Title" value={form.title} onChange={set('title')} required maxLength={200} />
-      <input placeholder="Description" value={form.description} onChange={set('description')} maxLength={2000} />
+      <input
+        placeholder="Title"
+        value={form.title}
+        onChange={set("title")}
+        required
+        maxLength={200}
+      />
+      <input
+        placeholder="Description"
+        value={form.description}
+        onChange={set("description")}
+        maxLength={2000}
+      />
       <label>
         Priority
-        <select value={form.priority} onChange={set('priority')}>
+        <select value={form.priority} onChange={set("priority")}>
           {Array.from({ length: 10 }, (_, i) => i + 1).map((p) => (
             <option key={p} value={p}>
               {p}
@@ -37,7 +48,7 @@ export default function TaskForm({ onCreate }) {
       </label>
       <label>
         Due
-        <input type="date" value={form.dueDate} onChange={set('dueDate')} />
+        <input type="date" value={form.dueDate} onChange={set("dueDate")} />
       </label>
       <button type="submit">Add task</button>
     </form>
