@@ -73,26 +73,24 @@ function validateTaskInput(body, { partial }) {
 
   // dueDate is optional - normalise "no due date" to null
 
-if (body.dueDate !== undefined) {
-  const dueDate = body.dueDate;
+  if (body.dueDate !== undefined) {
+    const dueDate = body.dueDate;
 
-  if (
-    dueDate !== null &&
-    (
-      typeof dueDate !== "string" ||
-      !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
-      Number.isNaN(Date.parse(`${dueDate}T00:00:00Z`)) ||
-      new Date(`${dueDate}T00:00:00Z`).toISOString().slice(0, 10) !== dueDate
-    )
-  ) {
-    throw new HttpError(
-      400,
-      "dueDate must be a valid date in YYYY-MM-DD format or null",
-    );
+    if (
+      dueDate !== null &&
+      (typeof dueDate !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(dueDate) ||
+        Number.isNaN(Date.parse(`${dueDate}T00:00:00Z`)) ||
+        new Date(`${dueDate}T00:00:00Z`).toISOString().slice(0, 10) !== dueDate)
+    ) {
+      throw new HttpError(
+        400,
+        "dueDate must be a valid date in YYYY-MM-DD format or null",
+      );
+    }
+
+    data.dueDate = dueDate;
   }
-
-  data.dueDate = dueDate;
-}
 
   if (body.status !== undefined) {
     if (!STATUSES.includes(body.status)) {

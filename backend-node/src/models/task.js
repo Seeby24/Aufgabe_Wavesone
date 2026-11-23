@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true, maxlength: 200 },
-    description: { type: String, default: '', maxlength: 2000 },
-    priority: { type: Number, default: '5' },
+    description: { type: String, default: "", maxlength: 2000 },
+    priority: { type: Number, default: 5 },
     dueDate: { type: String, default: null },
-    status: { type: String, enum: ['open', 'done'], default: 'open' },
+    status: { type: String, enum: ["open", "done"], default: "open" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = mongoose.models.Task || mongoose.model('Task', taskSchema);
+module.exports = mongoose.models.Task || mongoose.model("Task", taskSchema);

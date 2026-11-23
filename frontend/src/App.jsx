@@ -29,27 +29,27 @@ export default function App() {
     loadTasks();
   }, [loadTasks]);
 
-async function handleCreate(task) {
-  try {
-    await api.createTask(task);
-    await loadTasks();
-    return true;
-  } catch (err) {
-    setError(err.message);
-    return false;
+  async function handleCreate(task) {
+    try {
+      await api.createTask(task);
+      await loadTasks();
+      return true;
+    } catch (err) {
+      setError(err.message);
+      return false;
+    }
   }
-}
 
-async function handleToggle(task) {
-  try {
-    await api.updateTask(task.id, {
-      status: task.status === "done" ? "open" : "done",
-    });
-    await loadTasks();
-  } catch (err) {
-    setError(err.message);
+  async function handleToggle(task) {
+    try {
+      await api.updateTask(task.id, {
+        status: task.status === "done" ? "open" : "done",
+      });
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
   }
-}
 
   async function handleDelete(task) {
     try {
@@ -64,7 +64,7 @@ async function handleToggle(task) {
     <main className="container">
       <h1>Task Tracker</h1>
       <TaskForm onCreate={handleCreate} />
-      
+
       <div className="filters">
         <label>
           Status

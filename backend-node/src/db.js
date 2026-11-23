@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 let memoryServer = null;
 
@@ -11,13 +11,15 @@ async function connectDb() {
   let uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    const { MongoMemoryServer } = require('mongodb-memory-server');
+    const { MongoMemoryServer } = require("mongodb-memory-server");
     memoryServer = await MongoMemoryServer.create();
     uri = memoryServer.getUri();
-    console.log('[db] Using in-memory MongoDB (data resets on restart)');
+    console.log("[db] Using in-memory MongoDB (data resets on restart)");
   }
 
-  await mongoose.connect(uri, { dbName: process.env.MONGODB_DB || 'tasktracker' });
+  await mongoose.connect(uri, {
+    dbName: process.env.MONGODB_DB || "tasktracker",
+  });
 }
 
 async function disconnectDb() {
