@@ -29,14 +29,16 @@ export default function App() {
     loadTasks();
   }, [loadTasks]);
 
-  async function handleCreate(task) {
-    try {
-      await api.createTask(task);
-      await loadTasks();
-    } catch (err) {
-      setError(err.message);
-    }
+async function handleCreate(task) {
+  try {
+    await api.createTask(task);
+    await loadTasks();
+    return true;
+  } catch (err) {
+    setError(err.message);
+    return false;
   }
+}
 
 async function handleToggle(task) {
   try {

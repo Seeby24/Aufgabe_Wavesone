@@ -8,18 +8,21 @@ export default function TaskForm({ onCreate }) {
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!form.title.trim()) return;
+async function handleSubmit(e) {
+  e.preventDefault();
+  if (!form.title.trim()) return;
 
-    await onCreate({
-      title: form.title.trim(),
-      description: form.description,
-      priority: Number(form.priority),
-      dueDate: form.dueDate || null,
-    });
+  const created = await onCreate({
+    title: form.title.trim(),
+    description: form.description,
+    priority: Number(form.priority),
+    dueDate: form.dueDate || null,
+  });
+
+  if (created) {
     setForm(EMPTY);
   }
+}
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
