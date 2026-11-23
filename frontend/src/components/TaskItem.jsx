@@ -1,8 +1,8 @@
-import { formatDate, today } from '../date';
+import { formatDate, todayString } from '../date';
 
 export default function TaskItem({ task, onToggle, onDelete }) {
   const done = task.status === 'done';
-  const overdue = !done && task.dueDate && new Date(task.dueDate) < today();
+  const overdue = !done && task.dueDate && new Date(task.dueDate) < todayString();
 
   return (
     <li className={`task ${done ? 'done' : ''}`}>

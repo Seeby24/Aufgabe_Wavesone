@@ -12,7 +12,9 @@ export function startOfDay(value) {
   return date;
 }
 
-/** Start of today (00:00) */
-export function today() {
-  return startOfDay(new Date());
+export function todayString() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
