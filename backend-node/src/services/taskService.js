@@ -57,9 +57,15 @@ function validateTaskInput(body, { partial }) {
     data.description = body.description;
   }
 
-  if (body.priority !== undefined) {
-    data.priority = body.priority;
+if (body.priority !== undefined) {
+  const priority = Number(body.priority);
+
+  if (!Number.isInteger(priority) || priority < 1 || priority > 10) {
+    throw new HttpError(400, "Priority must be an integer between 1 and 10");
   }
+
+  data.priority = priority;
+}
 
   // dueDate is optional - normalise "no due date" to null
 

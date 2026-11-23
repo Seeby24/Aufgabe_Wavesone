@@ -13,8 +13,8 @@
 | 4   | Checkboxen erst nach refresh geändert| Backend gibt nach änderung das alte Document zurück |taskservice.updateTask --> {new: true}  |
 | 5   | GET-Request mit ungültiger id macht einen 500 Error| Mongoose erwartet ObjectIds statt Zahlen ID's   | taskService.getTask(id) --> ID validierung hinzufügen |
 | 6   | Beim Ändern des Titels über die API wurde das Fälligkeitsdatum gelöscht| validateTaskInput setzt fehlende dates auf null| taskService.validateTaskInput --> nur noch dueDate bearbeiten wenn mitgegeben oder ein Put ist|
-| 7   | Delete und und update Task geben bei ungültiger ID einen 500 Error | Mongoose erwartet ObjectIds statt Zahlen ID's | taskService.updateTask & deleteTask --> ID validierung hinzufügen                             |
-| 8   |                                          |
+| 7   | Delete und und update Task geben bei ungültiger ID einen 500 Error | Mongoose erwartet ObjectIds statt Zahlen ID's | taskService.updateTask & deleteTask --> ID validierung hinzufügen|
+| 8   | priority wird nicht überprüft und ungültige eingabe gibt einen 500 error|serives/taskService --> validation für priority hinzufügen|
 
 ## Feature: Filtern und Sortieren
 
