@@ -14,7 +14,6 @@ export default function App() {
   const [order, setOrder] = useState("desc");
 
   const loadTasks = useCallback(async () => {
-    setLoading(true);
     try {
       const data = await api.listTasks({ status, minPriority, sort, order });
       setTasks(Array.isArray(data) ? data : []);
@@ -39,18 +38,16 @@ export default function App() {
     }
   }
 
-  async function handleToggle(task) {
-    try {
-      const updated = await api.updateTask(task.id, {
-        status: task.status === "done" ? "open" : "done",
-      });
-      setTasks((current) =>
-        current.map((t) => (t.id === updated.id ? updated : t)),
-      );
-    } catch (err) {
-      setError(err.message);
-    }
+async function handleToggle(task) {
+  try {
+    await api.updateTask(task.id, {
+      status: task.status === "done" ? "open" : "done",
+    });
+    await loadTasks();
+  } catch (err) {
+    setError(err.message);
   }
+}
 
   async function handleDelete(task) {
     try {
